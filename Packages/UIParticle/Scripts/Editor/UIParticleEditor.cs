@@ -149,8 +149,17 @@ namespace Coffee.UIExtensions
                 .Select(x => x.GetComponent<ParticleSystemRenderer>().sharedMaterial)
                 .Where(x => x)
                 .ToArray();
-            AnimatedPropertiesEditor.DrawAnimatableProperties(_spAnimatableProperties, mats);
 
+            // Animated properties
+            EditorGUI.BeginChangeCheck();
+            AnimatedPropertiesEditor.DrawAnimatableProperties(_spAnimatableProperties, mats);
+            if (EditorGUI.EndChangeCheck())
+            {
+                foreach (UIParticle t in targets)
+                    t.SetMaterialDirty();
+            }
+
+            // Target ParticleSystems.
             _ro.DoLayoutList();
 
             serializedObject.ApplyModifiedProperties();

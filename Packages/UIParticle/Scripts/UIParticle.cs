@@ -432,6 +432,14 @@ namespace Coffee.UIExtensions
         }
 
 #if UNITY_EDITOR
+        protected override void OnValidate()
+        {
+            SetLayoutDirty();
+            SetVerticesDirty();
+            m_ShouldRecalculateStencil = true;
+            RecalculateClipping();
+        }
+
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (Application.isPlaying) return;
